@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ action }} targeta - Targeta Única
+{% endblock %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-8">
+        <div class="box">
+            <h1 class="title">{{ action }} targeta</h1>
+            <form method="post">
+                {% csrf_token %}
+
+                {% if not targeta %}
+                    <div class="field">
+                        <label class="label">Passatger</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="id_passatger" required>
+                                    <option value="" disabled {% if not passatger_preseleccionat %}selected{% endif %}>Selecciona un passatger</option>
+                                    {% for p in passatgers %}
+                                        <option value="{{ p.id }}" {% if passatger_preseleccionat == p.id %}selected{% endif %}>
+                                            #{{ p.id }} — {{ p.nom }} {{ p.llinatge_1 }}{% if p.llinatge_2 %} {{ p.llinatge_2 }}{% endif %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Perfil</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="perfil" required>
+                                    <option value="" disabled selected>Selecciona un perfil</option>
+                                    {% for perfil in perfils %}
+                                        <option value="{{ perfil }}">{{ perfil }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <p class="help">El codi de targeta es generarà automàticament segons el perfil seleccionat.</p>
+                    </div>
+                {% else %}
+                    <div class="field">
+                        <label class="label">Codi de targeta</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ targeta.codi_targeta }}" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Perfil</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ targeta.perfil }}" disabled>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="field">
+                    <label class="label">Saldo (€)</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="number" name="saldo" step="0.01" min="0"
+                               value="{% if targeta %}{{ targeta.saldo }}{% else %}0.00{% endif %}"
+                               placeholder="0.00"
+                               {% if not targeta %}required{% endif %}>
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-euro-sign"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Estat</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select name="estat" {% if not targeta %}required{% endif %}>
+                                {% if not targeta %}<option value="" disabled selected>Selecciona un estat</option>{% endif %}
+                                {% for estat in estats %}
+                                    <option value="{{ estat }}"
+                                        {% if targeta and targeta.estat == estat %}selected{% endif %}>
+                                        {{ estat }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% if targeta %}
+                        <p class="help has-text-danger">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Una targeta Robada o Caducada no es pot tornar a modificar.
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">
+                            <span class="icon">
+                                <i class="fa-regular fa-floppy-disk"></i>
+                            </span>
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                    <div class="control">
+                        <a href="{% if targeta %}{% url 'targeta_detail' targeta.id %}{% else %}{% url 'targeta_list' %}{% endif %}"
+                           class="button">
+                            <span class="icon">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                            <span>Cancel·lar</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

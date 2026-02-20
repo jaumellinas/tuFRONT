@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ passatger.id }}. {{ passatger.nom }} {{ passatger.llinatge_1 }} - Targeta Única{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h1 class="title">
+        {{ passatger.id }}. {{ passatger.nom }} {{ passatger.llinatge_1 }}
+        {% if passatger.llinatge_2 %} {{ passatger.llinatge_2 }}{% endif %}
+    </h1>
+    <div class="content">
+        <p><strong>Document:</strong> {{ passatger.document }}</p>
+        <p><strong>Correu electrònic:</strong> {{ passatger.email }}</p>
+        <p>
+            <strong>Sessió iniciada:</strong>
+            {% if passatger.sessio_iniciada %}
+                <span class="icon has-text-success">
+                    <i class="fa-regular fa-circle-check"></i>
+                </span>
+                Sí
+            {% else %}
+                <span class="icon has-text-grey-light">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                </span>
+                No
+            {% endif %}
+        </p>
+    </div>
+    <div class="buttons">
+        <a href="{% url 'passatger_edit' passatger.id %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </span>
+            <span>Editar</span>
+        </a>
+        <a href="{% url 'targeta_create' %}?passatger_id={{ passatger.id }}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-credit-card"></i>
+            </span>
+            <span>Nova targeta</span>
+        </a>
+        <form method="post" action="{% url 'passatger_delete' passatger.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="button" onclick="return confirm('Segur que vols eliminar aquest passatger? Aquesta acció no es pot desfer.')" style="margin-right: 8px;">
+                <span class="icon">
+                    <i class="fa-solid fa-trash-can"></i>
+                </span>
+                <span>Eliminar</span>
+            </button>
+        </form>
+        <a href="{% url 'passatger_list' %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+            <span>Tornar</span>
+        </a>
+    </div>
+</div>
+
+{% if targetes %}
+    <h2 class="title is-4">Targetes</h2>
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Codi</th>
+                <th>Perfil</th>
+                <th>Saldo</th>
+                <th>Estat</th>
+                <th>Accions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for targeta in targetes %}
+                <tr>
+                    <td>{{ targeta.id }}</td>
+                    <td><code>{{ targeta.codi_targeta }}</code></td>
+                    <td>{{ targeta.perfil }}</td>
+                    <td>{{ targeta.saldo }} €</td>
+                    <td>{{ targeta.estat }}</td>
+                    <td>
+                        <a href="{% url 'targeta_detail' targeta.id %}" class="button is-small">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="notification is-info is-light">
+        <p>Aquest passatger no té cap targeta associada.</p>
+    </div>
+{% endif %}
+{% endblock %}

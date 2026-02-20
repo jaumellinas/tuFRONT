@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if user %}Editar{% else %}Crear{% endif %} usuari - Targeta Única
+{% endblock %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-8">
+        <div class="box">
+            <h1 class="title">
+                {% if user %}Editar{% else %}Crear{% endif %} usuari
+            </h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">Nom</label>
+                    <div class="control">
+                        <input class="input" type="text" name="nom"
+                               value="{% if user %}{{ user.nom }}{% endif %}"
+                               placeholder="Nom" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Primer llinatge</label>
+                    <div class="control">
+                        <input class="input" type="text" name="llinatge_1"
+                               value="{% if user %}{{ user.llinatge_1 }}{% endif %}"
+                               placeholder="Primer llinatge" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Segon llinatge <span class="has-text-grey">(opcional)</span></label>
+                    <div class="control">
+                        <input class="input" type="text" name="llinatge_2"
+                               value="{% if user %}{{ user.llinatge_2 }}{% endif %}"
+                               placeholder="Segon llinatge">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Correu electrònic</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="email" name="email"
+                               value="{% if user %}{{ user.email }}{% endif %}"
+                               placeholder="correu@exemple.com" required>
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Contrasenya
+                        {% if user %}<span class="has-text-grey">(deixa en blanc per no canviar-la)</span>{% endif %}
+                    </label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="password" name="password"
+                               placeholder="Mínim 8 caràcters, una majúscula i un número"
+                               {% if not user %}required{% endif %}>
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">
+                            <span class="icon">
+                                <i class="fa-regular fa-floppy-disk"></i>
+                            </span>
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                    <div class="control">
+                        <a href="{% url 'user_list' %}" class="button">
+                            <span class="icon">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                            <span>Cancel·lar</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

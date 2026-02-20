@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.id }}. {{ user.nom }} {{ user.llinatge_1 }} - Targeta Única{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h1 class="title">{{ user.nom }} {{ user.llinatge_1 }}{% if user.llinatge_2 %} {{ user.llinatge_2 }}{% endif %}</h1>
+    <div class="content">
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Correu electrònic:</strong> {{ user.email }}</p>
+    </div>
+    <div class="buttons">
+        <a href="{% url 'user_edit' user.id %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </span>
+            <span>Editar</span>
+        </a>
+        <form method="post" action="{% url 'user_delete' user.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="button is-danger is-light"
+                    onclick="return confirm('Segur que vols eliminar aquest usuari?')">
+                <span class="icon">
+                    <i class="fa-solid fa-trash-can"></i>
+                </span>
+                <span>Eliminar</span>
+            </button>
+        </form>
+        <a href="{% url 'user_list' %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+            <span>Tornar</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

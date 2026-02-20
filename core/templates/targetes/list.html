@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Targetes - Targeta Única{% endblock %}
+
+{% block content %}
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Targetes</h1>
+        </div>
+    </div>
+    <div class="level-right">
+        <div class="level-item">
+            <form method="get" action="{% url 'targeta_list' %}">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" type="text" name="cerca"
+                               placeholder="Cerca per codi de targeta"
+                               value="{{ request.GET.cerca }}">
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button">
+                            <span class="icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="level-item">
+            <a href="{% url 'targeta_create' %}" class="button">
+                <span class="icon">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <span>Nova targeta</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if targetes %}
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Codi</th>
+                <th>Perfil</th>
+                <th>Saldo</th>
+                <th>Estat</th>
+                <th>Accions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for targeta in targetes %}
+                <tr>
+                    <td>{{ targeta.id }}</td>
+                    <td>{{ targeta.codi_targeta }}</td>
+                    <td>{{ targeta.perfil }}</td>
+                    {% load l10n %}
+                    <td>{{ targeta.saldo|floatformat:2|localize }} €</td>
+                    <td>{{ targeta.estat }}</td>
+                    <td>
+                        <a href="{% url 'targeta_detail' targeta.id %}" class="button is-small">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </a>
+                        <a href="{% url 'targeta_edit' targeta.id %}" class="button is-small">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="notification is-info is-light">
+        <p>No hi ha targetes registrades.</p>
+    </div>
+{% endif %}
+{% endblock %}

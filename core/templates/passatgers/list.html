@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Passatgers - Targeta Única{% endblock %}
+
+{% block content %}
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Passatgers</h1>
+        </div>
+    </div>
+    <div class="level-right">
+        <div class="level-item">
+            <form method="get" action="{% url 'passatger_list' %}">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" type="text" name="cerca"
+                               placeholder="Cerca per nom o document"
+                               value="{{ request.GET.cerca }}">
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button">
+                            <span class="icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="level-item">
+            <a href="{% url 'passatger_create' %}" class="button">
+                <span class="icon">
+                    <i class="fa-solid fa-user-plus"></i>
+                </span>
+                <span>Nou passatger</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if passatgers %}
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Llinatges</th>
+                <th>Document</th>
+                <th>Correu electrònic</th>
+                <th>Sessió</th>
+                <th>Accions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passatger in passatgers %}
+                <tr>
+                    <td>{{ passatger.id }}</td>
+                    <td>{{ passatger.nom }}</td>
+                    <td>
+                        {{ passatger.llinatge_1 }}
+                        {% if passatger.llinatge_2 %} {{ passatger.llinatge_2 }}{% endif %}
+                    </td>
+                    <td>{{ passatger.document }}</td>
+                    <td>{{ passatger.email }}</td>
+                    <td>
+                        {% if passatger.sessio_iniciada %}
+                            <span class="icon has-text-success">
+                                <i class="fa-regular fa-circle-check"></i>
+                            </span>
+                            Sí
+                        {% else %}
+                            <span class="icon has-text-grey-light">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                            No
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'passatger_detail' passatger.id %}" class="button is-small">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </a>
+                        <a href="{% url 'passatger_edit' passatger.id %}" class="button is-small">
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </span>
+                        </a>
+                        <form method="post" action="{% url 'passatger_delete' passatger.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="button is-small is-danger is-light"
+                                    onclick="return confirm('Segur que vols eliminar aquest passatger?')">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="notification is-info is-light">
+        <p>No hi ha passatgers registrats.</p>
+    </div>
+{% endif %}
+{% endblock %}

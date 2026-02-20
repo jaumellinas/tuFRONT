@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ action }} passatger - Targeta Única
+{% endblock %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-8">
+        <div class="box">
+            <h1 class="title">{{ action }} passatger</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">Nom</label>
+                    <div class="control">
+                        <input class="input" type="text" name="nom"
+                               value="{% if passatger %}{{ passatger.nom }}{% endif %}"
+                               placeholder="Nom" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Primer llinatge</label>
+                    <div class="control">
+                        <input class="input" type="text" name="llinatge_1"
+                               value="{% if passatger %}{{ passatger.llinatge_1 }}{% endif %}"
+                               placeholder="Primer llinatge" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Segon llinatge <span class="has-text-grey">(opcional)</span></label>
+                    <div class="control">
+                        <input class="input" type="text" name="llinatge_2"
+                               value="{% if passatger %}{{ passatger.llinatge_2 }}{% endif %}"
+                               placeholder="Segon llinatge">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Document d'identitat</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="text" name="document"
+                               value="{% if passatger %}{{ passatger.document }}{% endif %}"
+                               placeholder="12345678A" required>
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-id-card"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Correu electrònic</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="email" name="email"
+                               value="{% if passatger %}{{ passatger.email }}{% endif %}"
+                               placeholder="correu@exemple.com" required>
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">
+                            <span class="icon">
+                                <i class="fa-regular fa-floppy-disk"></i>
+                            </span>
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                    <div class="control">
+                        <a href="{% if passatger %}{% url 'passatger_detail' passatger.id %}{% else %}{% url 'passatger_list' %}{% endif %}"
+                           class="button">
+                            <span class="icon">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                            <span>Cancel·lar</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

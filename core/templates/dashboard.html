@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Inici - Targeta Única{% endblock %}
+
+{% block content %}
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Hola, {{ perfil.nom }}!</h1>
+        </div>
+    </div>
+</div>
+
+<div class="columns is-multiline">
+    <div class="column is-4">
+        <div class="box has-background-white-bis">
+            <div class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div>
+                            <p class="heading">Passatgers</p>
+                            <p class="title">{{ num_passatgers|default:"—" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-users fa-2x"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="{% url 'passatger_list' %}" class="button is-fullwidth">
+                    <span>Gestionar passatgers</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="column is-4">
+        <div class="box has-background-white-bis">
+            <div class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div>
+                            <p class="heading">Targetes</p>
+                            <p class="title">{{ num_targetes|default:"—" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-credit-card fa-2x"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="{% url 'targeta_list' %}" class="button is-fullwidth">
+                    <span>Gestionar targetes</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="column is-4">
+        <div class="box has-background-white-bis">
+            <div class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div>
+                            <p class="heading">Usuaris</p>
+                            <p class="title">{{ num_users|default:"—" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-user-shield fa-2x"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="{% url 'user_list' %}" class="button is-fullwidth">
+                    <span>Gestionar usuaris</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <h2 class="title is-4">Accions ràpides</h2>
+    <div class="buttons">
+        <a href="{% url 'passatger_create' %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-user-plus"></i>
+            </span>
+            <span>Nou passatger</span>
+        </a>
+        <a href="{% url 'targeta_create' %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span>Nova targeta</span>
+        </a>
+        <a href="{% url 'user_create' %}" class="button">
+            <span class="icon">
+                <i class="fa-solid fa-user-plus"></i>
+            </span>
+            <span>Nou usuari</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
